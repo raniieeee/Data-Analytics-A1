@@ -1,0 +1,31 @@
+{
+    "id": "DC9D42CA",
+    "path": "~/Desktop/Rani/da_assignment/q1/q1.qmd",
+    "project_path": "q1.qmd",
+    "type": "quarto_markdown",
+    "hash": "0",
+    "contents": "",
+    "dirty": true,
+    "created": 1745367063169.0,
+    "source_on_save": true,
+    "relative_order": 1,
+    "properties": {
+        "rmdVisualMode": "true",
+        "rmdVisualWrapConfigured": "true",
+        "source_window_id": "",
+        "Source": "Source",
+        "docOutlineVisible": "1",
+        "rmdVisualCollapsedChunks": "",
+        "rmdVisualModeLocation": "267:39",
+        "cursorPosition": "12,0",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1745367432,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1745367432234,
+    "read_only": false,
+    "read_only_alternatives": []
+}
