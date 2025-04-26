@@ -33,7 +33,7 @@ indicator1 <- read_csv("unicef_indicator_1.csv")
 # head(indicator1)
 ```
 
-## BAR CHART of Youth Unemployment by Gender
+# Bar Chart of Youth Unemployment by Gender
 ```{r}
 ggplot(indicator1, aes(x = sex, y = obs_value, fill = sex)) +
   geom_bar(stat = "identity") +
@@ -42,9 +42,9 @@ ggplot(indicator1, aes(x = sex, y = obs_value, fill = sex)) +
   scale_fill_manual(values=c("Male" = "royalblue", "Female" = "lightpink"))+
   theme_minimal() +
   labs(
-    title = "Youth Unemployment Rate: Male vs Female",
+    title = "Youth unemployment rate: Male vs Female",
     x = "Gender",
-    y = "Unemployment Rate (%)",
+    y = "Unemployment rate (%)",
     fill = "Gender"
   ) +
   theme(
@@ -53,20 +53,20 @@ ggplot(indicator1, aes(x = sex, y = obs_value, fill = sex)) +
     axis.title = element_text(size = 11)
   )
 ```
-## Scatter Plot with Linear Regression Line
+# Scatter Plot With Linear Regression Line
 ```{r}
 ggplot(indicator1, aes(x = obs_value, y = time_period)) +
   geom_point(color = "red") +
   geom_smooth(method = "lm", se = FALSE, color = "black") +
   theme_minimal() +
   labs(
-    title = "Observation Value vs Time Period",
-    x = "Observation Value",
+    title = "Observation value vs time period",
+    x = "Observation value",
     y = "Year"
   )
 ```
 
-## Youth Unemployment Distribution over the world
+# Youth Unemployment Distribution Over The World
 ```{r}
 fig <- plot_ly(indicator1,
                type = "choropleth",
@@ -81,7 +81,7 @@ fig <- plot_ly(indicator1,
                marker = list(line = list(color = "white", width = 1)))
 fig <- fig %>% layout(
   title = list(
-    text = "<b>Youth Unemployment Rate by Country</b>",
+    text = "<b>Youth unemployment rate by country</b>",
     font = list(size = 20),
     x = 0.5
   ),
@@ -112,9 +112,9 @@ ggplot(vaccination_trend, aes(x = time_period, y = avg_vaccination)) +
   geom_point(color = "firebrick", size = 2) +
   theme_minimal() +
   labs(
-    title = "Global Average Child Vaccination Rate Over Time",
+    title = "Global average child vaccination rate over time",
     x = "Year",
-    y = "Average Vaccination Rate (%)"
+    y = "Average vaccination rate (%)"
   ) +
   theme(plot.title = element_text(hjust = 0.5))
 
@@ -123,10 +123,8 @@ ggplot(vaccination_trend, aes(x = time_period, y = avg_vaccination)) +
 # Conclusion
 This report presents a dual exploration of human development through employment and healthcare lenses.
 
-In the first story, youth unemployment patterns were analyzed, revealing notable gender disparities and regional differences based on UNICEF data.  
-However, limitations such as lack of multi-year country-level data restricted deeper time trend analyses.
+In the first story, youth unemployment patterns were analyzed, revealing notable gender disparities and regional differences based on UNICEF data. However, limitations such as lack of multi-year country-level data restricted deeper time trend analyses.
 
-In the second story, child immunization rates were studied as a complementary indicator of development.  
-The time series visualization highlights improvements in healthcare access globally, although regional disparities likely remain.
+In the second story, child immunization rates were studied as a complementary indicator of development. The time series visualization highlights improvements in healthcare access globally, although regional disparities likely remain.
 
 Together, these analyses demonstrate the interconnection of employment opportunities and healthcare outcomes in shaping broader human development trajectories.
