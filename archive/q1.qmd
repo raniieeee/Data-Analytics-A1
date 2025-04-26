@@ -1,0 +1,110 @@
+---
+title: "UNICEF Data Visualisation Report"
+author: Rani
+date: 04/23/2025
+date-modified: 04/23/2025
+format:
+  html:
+    embed-resources: true
+    code-fold: true
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+```{r}
+
+#| warning: false
+#| message: false
+library(tidyverse)
+library(plotly)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+
+indicator1 <- read_csv("unicef_indicator_1.csv")
+
+head(indicator1)
+
+# Gender Comparison Bar Chart
+ggplot(indicator1, aes(x = sex, y = obs_value)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  geom_text(aes(label = round(obs_value, 2)), 
+            vjust = -0.5, size = 3) +
+  theme_minimal() +
+  labs(
+    title = "Youth Unemployment Rate: Male vs Female",
+    x = "Gender",
+    y = "Unemployment Rate (%)"
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 12, face = "bold"),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 10)
+  )
+
+
+# Scatter Plot with Linear Regression Line
+ggplot(indicator1, aes(x = obs_value, y = time_period)) +
+  geom_point(color = "purple") +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  theme_minimal() +
+  labs(
+    title = "Observation Value vs Time Period",
+    x = "Observation Value",
+    y = "Year"
+  )
+
+#World Map
+library(tidyverse)
+library(plotly)
+
+fig <- plot_ly(indicator1,
+               type = "choropleth",
+               locations = ~alpha_3_code,
+               locationmode = "ISO-3",
+               z = ~obs_value,
+               text = ~paste(
+                 "<b>Country:</b>", country, "<br>",
+                 "<b>Value:</b>", round(obs_value, 2)
+               ),
+               colorscale = "Viridis",
+               marker = list(line = list(color = "white", width = 1)))
+
+fig <- fig %>% layout(
+  title = list(
+    text = "<b>Youth Unemployment Rate by Country</b>",
+    font = list(size = 20),
+    x = 0.5
+  ),
+  geo = list(
+    projection = list(type = "natural earth"),
+    showframe = FALSE,
+    showcoastlines = TRUE,
+    coastlinecolor = "gray"
+  )
+)
+
+fig
+
+#Time-series chart
+# Filter for selected countries
+selected_countries <- indicator1 %>%
+  filter(country %in% c("India", "United States"))
+
+# Plot clean time series
+time_series_clean <- ggplot(selected_countries, aes(x = time_period, y = obs_value, color = country)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(linewidth = 2) +
+  theme_minimal() +
+  labs(
+    title = "Youth Unemployment Rate Over Time (India vs USA)",
+    x = "Year",
+    y = "Unemployment Rate (%)",
+    color = "Country"
+  ) +
+  scale_color_manual(values = c("India" = "royalblue", "United States" = "firebrick"))
+
+time_series_clean
+```
