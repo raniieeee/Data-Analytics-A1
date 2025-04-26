@@ -1,0 +1,133 @@
+---
+title: "Quarto Report"
+subtitle: "UNICEF Data Analysis: Youth Unemployment and Child Immunization"
+author: "Rani MedhaShree"
+format: html
+date: 26/04/2025
+embed-resources: true
+code-fold: true
+toc: true
+toc-title: "Contents"
+toc-location: left
+execute: 
+  error: true
+  warning: false
+---
+
+# Introduction
+
+This report presents the data analysis of two important dimensions of human development: youth unemployment and child immunization.  
+Using UNICEF-sourced data-sets, we first investigate employment patterns among youth across countries, and subsequently transition to examining trends in childhood vaccination as a proxy for healthcare access.
+
+Both employment opportunities and healthcare delivery are crucial indicators of social development, and understanding these aspects helps build a more holistic view of progress across regions.
+
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+library(plotly)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+indicator1 <- read_csv("unicef_indicator_1.csv")
+# head(indicator1)
+```
+
+## BAR CHART of Youth Unemployment by Gender
+```{r}
+ggplot(indicator1, aes(x = sex, y = obs_value, fill = sex)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = round(obs_value, 2)), 
+            vjust = -0.5, size = 3) +
+  scale_fill_manual(values=c("Male" = "royalblue", "Female" = "lightpink"))+
+  theme_minimal() +
+  labs(
+    title = "Youth Unemployment Rate: Male vs Female",
+    x = "Gender",
+    y = "Unemployment Rate (%)",
+    fill = "Gender"
+  ) +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 11)
+  )
+```
+## Scatter Plot with Linear Regression Line
+```{r}
+ggplot(indicator1, aes(x = obs_value, y = time_period)) +
+  geom_point(color = "red") +
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  theme_minimal() +
+  labs(
+    title = "Observation Value vs Time Period",
+    x = "Observation Value",
+    y = "Year"
+  )
+```
+
+## Youth Unemployment Distribution over the world
+```{r}
+fig <- plot_ly(indicator1,
+               type = "choropleth",
+               locations = ~alpha_3_code,
+               locationmode = "ISO-3",
+               z = ~obs_value,
+               text = ~paste(
+                 "<b>Country:</b>", country, "<br>",
+                 "<b>Value:</b>", round(obs_value, 2)
+               ),
+               colorscale = "Viridis",
+               marker = list(line = list(color = "white", width = 1)))
+fig <- fig %>% layout(
+  title = list(
+    text = "<b>Youth Unemployment Rate by Country</b>",
+    font = list(size = 20),
+    x = 0.5
+  ),
+  geo = list(
+    projection = list(type = "natural earth"),
+    showframe = FALSE,
+    showcoastlines = TRUE,
+    coastlinecolor = "gray"
+  ),
+  margin = list(t = 80)
+)
+fig
+```
+
+# Human Development
+After examining youth unemployment patterns, here is a bit extended analysis towards another key dimension of human development: child immunization.  
+Childhood vaccination rates serve as an important proxy for healthcare access, infrastructure quality, and social well-being in countries.  
+The following section visualizes trends in child immunization rates across years based on another UNICEF dataset.
+```{r}
+indicator2 <- read_csv("unicef_indicator_2.csv")
+```
+## Child Vaccination Trends
+```{r}
+vaccination_trend <- indicator2 %>%
+  group_by(time_period) %>%
+  summarise(avg_vaccination = mean(obs_value, na.rm = TRUE))
+ggplot(vaccination_trend, aes(x = time_period, y = avg_vaccination)) +
+  geom_line(color = "royalblue", linewidth = 1.5) +
+  geom_point(color = "firebrick", size = 2) +
+  theme_minimal() +
+  labs(
+    title = "Global Average Child Vaccination Rate Over Time",
+    x = "Year",
+    y = "Average Vaccination Rate (%)"
+  ) +
+  theme(plot.title = element_text(hjust = 0.5))
+
+```
+
+# Conclusion
+This report presents a dual exploration of human development through employment and healthcare lenses.  
+In the first story, youth unemployment patterns were analyzed, revealing notable gender disparities and regional differences based on UNICEF data.  
+However, limitations such as lack of multi-year country-level data restricted deeper time trend analyses.
+
+In the second story, child immunization rates were studied as a complementary indicator of development.  
+The time series visualization highlights improvements in healthcare access globally, although regional disparities likely remain.
+
+Together, these analyses demonstrate the interconnection of employment opportunities and healthcare outcomes in shaping broader human development trajectories.
