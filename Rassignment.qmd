@@ -3,7 +3,6 @@ title: "Quarto Report"
 subtitle: "UNICEF Data Analysis: Youth Unemployment and Child Immunization"
 author: "Rani MedhaShree"
 format: html
-date: 26/04/2025
 embed-resources: true
 code-fold: true
 toc: true
@@ -98,8 +97,7 @@ fig
 ```
 
 # Human Development
-After examining youth unemployment patterns, here is a bit extended analysis towards another key dimension of human development: child immunization.  
-Childhood vaccination rates serve as an important proxy for healthcare access, infrastructure quality, and social well-being in countries.  
+After examining youth unemployment patterns, here is a bit extended analysis towards another key dimension of human development: child immunization. Childhood vaccination rates serve as an important proxy for healthcare access, infrastructure quality, and social well-being in countries.  
 The following section visualizes trends in child immunization rates across years based on another UNICEF dataset.
 ```{r}
 indicator2 <- read_csv("unicef_indicator_2.csv")
@@ -123,7 +121,8 @@ ggplot(vaccination_trend, aes(x = time_period, y = avg_vaccination)) +
 ```
 
 # Conclusion
-This report presents a dual exploration of human development through employment and healthcare lenses.  
+This report presents a dual exploration of human development through employment and healthcare lenses.
+
 In the first story, youth unemployment patterns were analyzed, revealing notable gender disparities and regional differences based on UNICEF data.  
 However, limitations such as lack of multi-year country-level data restricted deeper time trend analyses.
 
